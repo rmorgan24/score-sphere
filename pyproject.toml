@@ -1,5 +1,5 @@
 [tool.aerich]
-tortoise_orm = "score-sphere.settings.TORTOISE_ORM"
+tortoise_orm = "score_sphere.settings.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
 
