@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/devcontainers/python:0-3.11 as base
 
 ENV PORT 8080
 ENV PYTHONUNBUFFERED 1
-ENV QUART_APP score-sphere
+ENV QUART_APP score_sphere
 EXPOSE $PORT
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

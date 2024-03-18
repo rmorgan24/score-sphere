@@ -13,7 +13,7 @@ Before any of the commands will work, you MUST run `init` in each terminal.  Aft
 
 To initialize the configuration files for Tortoise ORM you must run the following command.  This command only needs to be run if the migrations directory is removed in order to start over again.
 
-`aerich init -t score-sphere.settings.TORTOISE_ORM`
+`aerich init -t score_sphere.settings.TORTOISE_ORM`
 
 In order to create an initial migration file, you can run the following command.  You should now see a file ending in `init.py` in `migrations/models` directory.
 
@@ -39,4 +39,4 @@ This will create a new file in the migration/models directory.  At this point no
 
 In order to run pylint in the context of the venv, you must use this command:
 
-`python $(which pylint) score-sphere`
+`python $(which pylint) score_sphere`
