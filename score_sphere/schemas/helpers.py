@@ -5,6 +5,7 @@ from pydantic import BaseModel as PydanticBaseModel
 from pydantic import EmailStr as PydanticEmailStr
 from pydantic import ValidationInfo, field_validator
 from pydantic_core import PydanticCustomError
+from tortoise.fields.relational import ReverseRelation, _NoneAwaitable
 from tortoise.queryset import QuerySet
 from typing_extensions import Annotated
 
@@ -14,8 +15,16 @@ def PydanticValueError(msg, type=None):
 
 
 def remove_queryset(value: str):
-    return None if isinstance(value, QuerySet) else value
+    return (
+        None
+        if isinstance(value, _NoneAwaitable) or isinstance(value, QuerySet)
+        else value
+    )
 
+def remove_reverse_relation(value: str):
+    if isinstance(value, ReverseRelation):
+        return value.related_objects
+    return None
 
 def parse_list(value: str):
     return value.split(",") if isinstance(value, str) else value
@@ -81,4 +90,5 @@ NOTSET = object()
 
 
 PasswordStr = Annotated[str, AfterValidator(validate_password)]
+EmailStr = PydanticEmailStr
 EmailStr = PydanticEmailStr
