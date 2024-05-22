@@ -39,4 +39,4 @@ WORKDIR $APP_HOME
 
 COPY . .
 
-CMD exec /venv/bin/hypercorn --bind :$PORT $QUART_APP:app
+CMD exec /venv/bin/hypercorn --access-logfile - --bind :$PORT $QUART_APP:app
