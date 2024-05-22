@@ -97,4 +97,4 @@ class MessageQueryString(BaseModel):
 
 class MessageResultSet(BaseModel):
     pagination: Pagination
-    games: List[Message]
+    messages: List[Message]

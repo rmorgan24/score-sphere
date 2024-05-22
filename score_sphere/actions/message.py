@@ -33,22 +33,22 @@ def has_permission(
 async def get(
     user: schemas.User, id: int = None, options: schemas.MessageGetOptions = None
 ) -> schemas.Message:
-    game = None
+    message = None
     if id:
-        game = await models.Message.get(id=id)
+        message = await models.Message.get(id=id)
     else:
         raise ActionError("missing lookup key", type="not_found")
 
     if not has_permission(
-        user, schemas.Message.model_validate(game), enums.Permission.READ
+        user, schemas.Message.model_validate(message), enums.Permission.READ
     ):
         raise ForbiddenActionError()
 
     if options:
         if options.resolves:
-            await game.fetch_related(*options.resolves)
+            await message.fetch_related(*options.resolves)
 
-    return schemas.Message.model_validate(game)
+    return schemas.Message.model_validate(message)
 
 
 @handle_orm_errors
@@ -61,7 +61,9 @@ async def query(
 
     return schemas.MessageResultSet(
         pagination=pagination,
-        games=[schemas.Message.model_validate(game) for game in await queryset],
+        messages=[
+            schemas.Message.model_validate(message) for message in await queryset
+        ],
     )
 
 
@@ -70,36 +72,36 @@ async def create(user: schemas.User, data: schemas.MessageCreate) -> schemas.Mes
     if not has_permission(user, None, enums.Permission.CREATE):
         raise ForbiddenActionError()
 
-    game = await models.Message.create(text=data.text)
+    message = await models.Message.create(text=data.text)
 
-    return schemas.Message.model_validate(game)
+    return schemas.Message.model_validate(message)
 
 
 @handle_orm_errors
 async def delete(user: schemas.User, id: int) -> None:
-    game = await models.Message.get(id=id)
+    message = await models.Message.get(id=id)
 
     if not has_permission(
-        user, schemas.Message.model_validate(game), enums.Permission.DELETE
+        user, schemas.Message.model_validate(message), enums.Permission.DELETE
     ):
         raise ForbiddenActionError()
 
-    await game.delete()
+    await message.delete()
 
 
 @handle_orm_errors
 async def update(
     user: schemas.User, id: int, data: schemas.MessagePatch
 ) -> schemas.Message:
-    game = await models.Message.get(id=id)
+    message = await models.Message.get(id=id)
 
     if not has_permission(
-        user, schemas.Message.model_validate(game), enums.Permission.UPDATE
+        user, schemas.Message.model_validate(message), enums.Permission.UPDATE
     ):
         raise ForbiddenActionError()
 
-    conditional_set(game, "text", data.text)
+    conditional_set(message, "text", data.text)
 
-    await game.save()
+    await message.save()
 
-    return schemas.Message.model_validate(game)
+    return schemas.Message.model_validate(message)
