@@ -35,7 +35,7 @@ void saveMessage(String message) {
     HTTPClient http;
 
     // Send request
-    http.begin(client, "http://score-sphere.duckdns.org/api/message");
+    http.begin(client, "http://score-sphere.duckdns.org:8888/api/message");
     http.POST(json);
 
     // Read response
@@ -62,7 +62,7 @@ void createGame() {
     HTTPClient http;
 
     // Send request
-    http.begin(client, "http://score-sphere.duckdns.org/api/game");
+    http.begin(client, "http://score-sphere.duckdns.org:8888/api/game");
     http.POST(json);
 
     // Read response
@@ -90,7 +90,7 @@ void updateGame() {
     HTTPClient http;
 
     // Send request
-    http.begin(client, "http://score-sphere.duckdns.org/api/game/" + gameId);
+    http.begin(client, "http://score-sphere.duckdns.org:8888/api/game/" + gameId);
     http.PATCH(json);
 
     // Read response

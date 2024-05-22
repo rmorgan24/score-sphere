@@ -37,3 +37,10 @@ class GameStatus(EnumStr):
 class GameCardColor(EnumStr):
     RED = "red"
     YELLOW = "yellow"
+
+
+class GameSport(EnumStr):
+    BASKETBALL = "basketball"
+    FIELD_HOCKEY = "field-hockey"
+    LACROSSE = "lacrosse"
+    SOCCER = "soccer"
