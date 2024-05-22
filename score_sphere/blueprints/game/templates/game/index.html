@@ -28,7 +28,10 @@
         <div class="p-3 bg-body rounded shadow-sm">
             <a class="text-decoration-none text-primary-emphasis" href="{{ url_for('game.view', id=game.id) }}">
                 <div class="row border-bottom small pb-1 mb-2">
-                    <div class="col-12 text-end">
+                    <div class="col-6">
+                        {{ game.verbose_sport }}
+                    </div>
+                    <div class="col-6 text-end">
                         {% if game.status == 'in-progress' %}
                         {{ game.time_remaining_clock }} P{{ game.period }}
                         {% else %}

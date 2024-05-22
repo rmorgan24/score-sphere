@@ -28,7 +28,6 @@ TIME_REMAINING_VALIDATOR = int
 
 
 class GameCardCreate(BaseModel):
-    game_id: GAME_ID_VALIDATOR
     player_number: PLAYER_NUMBER_VALIDATOR
     card_color: CARD_COLOR_VALIDATOR
     period: PERIOD_VALIDATOR

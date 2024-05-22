@@ -25,6 +25,38 @@
     </div>
 </div>
 
+<div class="mt-4">
+    <h5>Cards</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player #</th>
+                <th>Card Color</th>
+                <th>Period</th>
+                <th>Time (s)</th>
+            </tr>
+        </thead>
+        <tbody id="game-cards">
+            {% for card in game.cards %}
+            <tr>
+                <td>
+                    {{ card.player_number }}
+                </td>
+                <td>
+                    {{ card.card_color|upper }}
+                </td>
+                <td>
+                    {{ card.period }}
+                </td>
+                <td>
+                    {{ card.time_remaining }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 {#
 <div>
     {% for score in game.scores %}
@@ -60,6 +92,32 @@
         document.getElementById('game-period').innerText = data.period;
         document.getElementById('game-status').innerText = data.verbose_status;
         document.getElementById('game-time-remaining').innerText = data.time_remaining_clock;
+
+        const tbody = document.getElementById('game-cards');
+        tbody.innerHTML = "";
+        for (let i = 0; i < data.cards.length; i++) {
+            var card = data.cards[i];
+            var row = document.createElement("tr");
+            var cell;
+
+            cell = document.createElement("td");
+            cell.innerText = card.player_number;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerText = card.card_color.toUpperCase();
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerText = card.period;
+            row.appendChild(cell);
+
+            cell = document.createElement("td");
+            cell.innerText = card.time_remaining;
+            row.appendChild(cell);
+
+            tbody.append(row);
+        }
     }
 
     function onmessageCallback(message) {

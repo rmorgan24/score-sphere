@@ -115,6 +115,7 @@ async def update(user: schemas.User, id: int, data: schemas.GamePatch) -> schema
     conditional_set(game, "time_remaining", data.time_remaining)
 
     await game.save()
+    await game.fetch_related("cards")
 
     schema_game = schemas.Game.model_validate(game)
 
@@ -155,6 +156,7 @@ async def card_create(
     except DoesNotExist:
         game_card = await models.GameCard.create(
             game_id=id,
+            card_color=data.card_color,
             player_number=data.player_number,
             period=data.period,
             time_remaining=data.time_remaining,
@@ -162,5 +164,16 @@ async def card_create(
 
     game_card.card_color = data.card_color
     await game_card.save()
+
+    await game.fetch_related("cards")
+
+    schema_game = schemas.Game.model_validate(game)
+
+    mm = MessageManager(user, f"game-{id}")
+    await mm.send_message(
+        "update",
+        f"Game {id} updated",
+        data=json.loads(schemas.Game.model_dump_json(schema_game)),
+    )
 
     return schemas.GameCard.model_validate(game_card)
