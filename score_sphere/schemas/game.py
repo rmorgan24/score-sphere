@@ -21,6 +21,7 @@ GAME_ID_VALIDATOR = int
 GAME_STATUS_VALIDATOR = enums.GameStatus
 PERIOD_VALIDATOR = int
 PLAYER_NUMBER_VALIDATOR = int
+SPORT_VALIDATOR = enums.GameSport
 TEAM_NAME_VALIDATOR = Annotated[str, StringConstraints(max_length=16)]
 TEAM_SCORE_VALIDATOR = int
 TIME_REMAINING_VALIDATOR = int
@@ -46,6 +47,7 @@ class GameCard(BaseModel):
 
 
 class GameCreate(BaseModel):
+    sport: SPORT_VALIDATOR
     home_team_name: Optional[TEAM_NAME_VALIDATOR] = None
     away_team_name: Optional[TEAM_NAME_VALIDATOR] = None
     time_remaining: TIME_REMAINING_VALIDATOR
@@ -73,6 +75,7 @@ class GameCreate(BaseModel):
 
 
 class GamePatch(BaseModel):
+    sport: SPORT_VALIDATOR = NOTSET
     home_team_name: TEAM_NAME_VALIDATOR = NOTSET
     home_team_score: TEAM_SCORE_VALIDATOR = NOTSET
 
@@ -87,6 +90,7 @@ class GamePatch(BaseModel):
 class Game(BaseModel):
     id: int
 
+    sport: str
     home_team_name: Optional[str]
     home_team_score: int
 
@@ -125,6 +129,11 @@ class Game(BaseModel):
     @property
     def verbose_status(self) -> str:
         return self.status.title().replace("-", " ")
+
+    @computed_field
+    @property
+    def verbose_sport(self) -> str:
+        return self.sport.title().replace("-", " ")
 
 
 class GameFilterField(enums.EnumStr):

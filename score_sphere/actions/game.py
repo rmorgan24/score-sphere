@@ -1,10 +1,11 @@
+import json
 from typing import Union
 
 from tortoise.exceptions import DoesNotExist
-from tortoise.expressions import F, Q
 
 from score_sphere import enums, models, schemas
 from score_sphere.lib.error import ActionError, ForbiddenActionError
+from score_sphere.lib.message_manager import MessageManager
 
 from .helpers import conditional_set, handle_orm_errors
 
@@ -69,6 +70,7 @@ async def create(user: schemas.User, data: schemas.GameCreate) -> schemas.Game:
         raise ForbiddenActionError()
 
     game = await models.Game.create(
+        sport=data.sport,
         home_team_name=data.home_team_name,
         away_team_name=data.away_team_name,
         period=data.period,
@@ -100,6 +102,8 @@ async def update(user: schemas.User, id: int, data: schemas.GamePatch) -> schema
     ):
         raise ForbiddenActionError()
 
+    conditional_set(game, "sport", data.sport)
+
     conditional_set(game, "home_team_name", data.home_team_name)
     conditional_set(game, "home_team_score", data.home_team_score)
 
@@ -112,7 +116,16 @@ async def update(user: schemas.User, id: int, data: schemas.GamePatch) -> schema
 
     await game.save()
 
-    return schemas.Game.model_validate(game)
+    schema_game = schemas.Game.model_validate(game)
+
+    mm = MessageManager(user, f"game-{id}")
+    await mm.send_message(
+        "update",
+        f"Game {id} updated",
+        data=json.loads(schemas.Game.model_dump_json(schema_game)),
+    )
+
+    return schema_game
 
 
 @handle_orm_errors

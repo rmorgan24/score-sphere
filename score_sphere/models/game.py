@@ -8,6 +8,7 @@ from .helpers import TimestampMixin
 class Game(TimestampMixin, Model):
     id = fields.IntField(pk=True)
 
+    sport = fields.CharEnumField(enums.GameSport)
     home_team_name = fields.CharField(128, null=True)
     home_team_score = fields.IntField(default=0)
 

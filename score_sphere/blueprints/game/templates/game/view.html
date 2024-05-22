@@ -9,7 +9,7 @@
         </a>
     </div>
     <div class="col-12 col-md-4 py-3 fs-4">
-        <span id="game-datetime">{{ game.time_remaining_clock }}</span><br />
+        <span id="game-time-remaining">{{ game.time_remaining_clock }}</span><br />
         Period <span id="game-period">{{ game.period }}</span><br /><span id="game-status">{{ game.verbose_status
             }}</span><br />
         {% if can_edit %}
@@ -59,6 +59,7 @@
         document.getElementById('home-score').innerText = data.home_team_score;
         document.getElementById('game-period').innerText = data.period;
         document.getElementById('game-status').innerText = data.verbose_status;
+        document.getElementById('game-time-remaining').innerText = data.time_remaining_clock;
     }
 
     function onmessageCallback(message) {

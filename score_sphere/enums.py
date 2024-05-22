@@ -44,3 +44,4 @@ class GameSport(EnumStr):
     FIELD_HOCKEY = "field-hockey"
     LACROSSE = "lacrosse"
     SOCCER = "soccer"
+    OTHER = "other"
