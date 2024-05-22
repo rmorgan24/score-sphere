@@ -54,7 +54,12 @@ class GameCreate(BaseModel):
 
     @field_validator("time_remaining", mode="before")
     @classmethod
-    def time_remaining_clock_converter(cls, value: str, info: ValidationInfo):
+    def time_remaining_clock_converter(
+        cls, value: Union[int, str], _info: ValidationInfo
+    ):
+        if isinstance(value, int):
+            return value
+
         s_values = value.split(":")
         if len(s_values) == 2:
             try:
