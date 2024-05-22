@@ -1,4 +1,10 @@
 #include <WiFi.h>
+#include "ArduinoJson.h"
+
+
+# NOTE: YOU NEED TO INSTALL ArduinoJson 7
+# follow the instructions here (https://arduinojson.org/v7/how-to/install-arduinojson/)
+# I assume you are using Arduino IDE
 
 // Replace with your network credentials
 const char* ssid = "BigRed";
