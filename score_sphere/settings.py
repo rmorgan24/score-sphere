@@ -34,7 +34,7 @@ QUART_SCHEMA_CONVERT_CASING = strtobool(
     os.environ.get("QUART_SCHEMA_CONVERT_CASING", "False")
 )
 AUTH_LOGIN_SUCCESS_ENDPOINT = os.environ.get(
-    "AUTH_LOGIN_SUCCESS_ENDPOINT", "post.index"
+    "AUTH_LOGIN_SUCCESS_ENDPOINT", "game.index"
 )
 AUTH_LOGOUT_SUCCESS_ENDPOINT = os.environ.get(
     "AUTH_LOGOUT_SUCCESS_ENDPOINT", "marketing.index"

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% import 'macros.html' as macros %}
+
+
+{% block content %}
+<div>
+    <div class="float-end mt-2">
+        <a class="btn btn-primary btn-sm ajax-modal" href="{{ url_for('.create') }}"><i
+                class="bi bi-file-earmark-plus"></i>
+            Create Game</a>
+    </div>
+    <ul class="nav nav-underline mb-2">
+        <li class="nav-item">
+            <a class="nav-link {% if subtab == 'all' %}active{% endif %}" aria-current="page"
+                href="{{ url_for('game.index', status__in='not-started,in-progress') }}">All Games</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if subtab == 'ended' %}active{% endif %}"
+                href="{{ url_for('game.index', status__in='ended') }}">Ended Games</a>
+        </li>
+    </ul>
+    <br />
+</div>
+
+<div class="row g-3">
+    {% for game in resultset.games %}
+    <div class="col-12 col-md-6 col-xl-4">
+        <div class="p-3 bg-body rounded shadow-sm">
+            <a class="text-decoration-none text-primary-emphasis" href="{{ url_for('game.view', id=game.id) }}">
+                <div class="row border-bottom small pb-1 mb-2">
+                    <div class="col-12 text-end">
+                        {% if game.status == 'in-progress' %}
+                        {{ game.time_remaining_clock }} P{{ game.period }}
+                        {% else %}
+                        [ {{ game.status }} ]
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10">{{ game.away_team_name|default('Away', true) }}</div>
+                    <div id="away-score" class="col-2 text-end">{{ game.away_team_score }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10">{{ game.home_team_name|default('Home', true) }}</div>
+                    <div id="home-score" class="col-2 text-end">{{ game.home_team_score }}</div>
+                </div>
+
+                <div class="row pt-2 small text-secondary">
+                    <div class="col-12 small">
+                        <strong>Last Updated:</strong> {{ game.modified_at|ago }}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <div class="pt-3">
+        No Events Found.
+    </div>
+    {% endfor %}
+</div>
+
+{{ macros.pagination(resultset.pagination.current_page, resultset.pagination.num_pages, relative_url_for) }}
+{% endblock content %}

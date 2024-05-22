@@ -1,3 +1,1 @@
-__all__ = ["post", "user"]
-
-from . import post, token, user
+from . import game, message, token, user

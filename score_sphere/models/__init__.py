@@ -1,4 +1,5 @@
 # pylint: disable=unused-wildcard-import
-from .post import *
+from .game import *
+from .message import *
 from .token import *
 from .user import *

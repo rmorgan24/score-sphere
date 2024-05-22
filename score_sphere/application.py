@@ -10,10 +10,14 @@ from quart import Quart, has_request_context, redirect, request, url_for
 from quart.templating import render_template
 from quart_auth import QuartAuth, Unauthorized
 from quart_schema import QuartSchema
-from quart_schema.extension import (QUART_SCHEMA_OPERATION_ID_ATTRIBUTE,
-                                    QUART_SCHEMA_TAG_ATTRIBUTE)
-from quart_schema.validation import (RequestSchemaValidationError,
-                                     ResponseSchemaValidationError)
+from quart_schema.extension import (
+    QUART_SCHEMA_OPERATION_ID_ATTRIBUTE,
+    QUART_SCHEMA_TAG_ATTRIBUTE,
+)
+from quart_schema.validation import (
+    RequestSchemaValidationError,
+    ResponseSchemaValidationError,
+)
 from tortoise.contrib.quart import register_tortoise
 from werkzeug.exceptions import NotFound
 
@@ -52,12 +56,10 @@ def register_blueprints(app):
     # pylint: disable=import-outside-toplevel
     from score_sphere.blueprints.api import blueprint as api_blueprint
     from score_sphere.blueprints.auth import blueprint as auth_blueprint
-    from score_sphere.blueprints.auth_google import \
-        blueprint as auth_google_blueprint
+    from score_sphere.blueprints.auth_google import blueprint as auth_google_blueprint
     from score_sphere.blueprints.chat import blueprint as chat_blueprint
-    from score_sphere.blueprints.marketing import \
-        blueprint as marketing_blueprint
-    from score_sphere.blueprints.post import blueprint as post_blueprint
+    from score_sphere.blueprints.game import blueprint as game_blueprint
+    from score_sphere.blueprints.marketing import blueprint as marketing_blueprint
     from score_sphere.blueprints.user import blueprint as user_blueprint
 
     # pylint: enable=import-outside-toplevel
@@ -66,8 +68,8 @@ def register_blueprints(app):
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
     app.register_blueprint(auth_google_blueprint, url_prefix="/auth/google")
     app.register_blueprint(chat_blueprint, url_prefix="/chat")
+    app.register_blueprint(game_blueprint, url_prefix="/game")
     app.register_blueprint(marketing_blueprint)
-    app.register_blueprint(post_blueprint, url_prefix="/post")
     app.register_blueprint(user_blueprint, url_prefix="/user")
 
 

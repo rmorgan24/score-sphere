@@ -6,11 +6,6 @@ class EnumStr(str, Enum):
         return self.value
 
 
-class PostStatus(EnumStr):
-    DRAFT = "draft"
-    PUBLISHED = "published"
-
-
 class UserRole(EnumStr):
     ADMIN = "admin"
     USER = "user"
@@ -31,3 +26,14 @@ class Permission(EnumStr):
 class TokenType(EnumStr):
     WEB = "web"
     API = "api"
+
+
+class GameStatus(EnumStr):
+    NOT_STARTED = "not-started"
+    IN_PROGRESS = "in-progress"
+    ENDED = "ended"
+
+
+class GameCardColor(EnumStr):
+    RED = "red"
+    YELLOW = "yellow"

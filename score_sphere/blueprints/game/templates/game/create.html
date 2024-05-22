@@ -1,0 +1,34 @@
+{% extends base_template|default('base.html', true) %}
+{% import 'macros.html' as macros %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <div class="row justify-content-md-center">
+        <div class="col-md-12 col-lg-8">
+            <h3>{% block title %}Create Game{% endblock %}</h3>
+            <form {% block form_details %}class="ajax" target="_top" method="POST"
+                action="{{ url_for('api.game.create') }}" {% endblock form_details %}>
+
+                {% block body %}
+                <input name="r" type="hidden" value="{{ r }}" />
+                {{ macros.text('away_team_name', game, label="Away Team") }}
+                {{ macros.text('home_team_name', game, label="Home Team") }}
+                {{ macros.text('period', game)}}
+                {{ macros.text('time_remaining', game, label='Time Remaining') }}
+                {{ macros.select('status', game, status_options) }}
+                {% endblock body %}
+
+                <div class="text-end">
+                    {% block buttons %}
+                    <button type="submit" class="btn btn-primary">
+                        <span class="d-none loading-spinner spinner-border spinner-border-sm"></span>
+                        Submit
+                    </button>
+                    {% endblock buttons %}
+                    <div class="status"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
