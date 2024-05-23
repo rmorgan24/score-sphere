@@ -1,10 +1,11 @@
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include "ArduinoJson.h"
 
 
-# NOTE: YOU NEED TO INSTALL ArduinoJson 7
-# follow the instructions here (https://arduinojson.org/v7/how-to/install-arduinojson/)
-# I assume you are using Arduino IDE
+// NOTE: YOU NEED TO INSTALL ArduinoJson 7
+// follow the instructions here (https://arduinojson.org/v7/how-to/install-arduinojson/)
+// I assume you are using Arduino IDE
 
 // Replace with your network credentials
 const char* ssid = "BigRed";
@@ -36,6 +37,7 @@ void saveMessage(String message) {
 
     // Send request
     http.begin(client, "http://score-sphere.duckdns.org:8888/api/message");
+    http.addHeader("Content-Type", "application/json");
     http.POST(json);
 
     // Read response
@@ -63,6 +65,7 @@ void createGame() {
 
     // Send request
     http.begin(client, "http://score-sphere.duckdns.org:8888/api/game");
+    http.addHeader("Content-Type", "application/json");
     http.POST(json);
 
     // Read response
@@ -91,6 +94,7 @@ void updateGame() {
 
     // Send request
     http.begin(client, "http://score-sphere.duckdns.org:8888/api/game/" + gameId);
+    http.addHeader("Content-Type", "application/json");
     http.PATCH(json);
 
     // Read response
@@ -105,11 +109,9 @@ void setup() {
   initWiFi();
   Serial.print("RRSI: ");
   Serial.println(WiFi.RSSI());
+  saveMessage("Hello Riley!");
+  Serial.print("Message Sent");
 }
 
 void loop() {
-    String message = "Message " + count;
-    saveMessage(message);
-    count++;
-    delay(5*1000)
 }
