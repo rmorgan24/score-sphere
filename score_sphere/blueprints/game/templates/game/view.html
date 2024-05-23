@@ -92,7 +92,9 @@
 
     function updateEvent(link, data) {
         document.getElementById('away-score').innerText = data.away_team_score;
+        document.getElementById('away-name').innerText = data.away_team_name_with_default;
         document.getElementById('home-score').innerText = data.home_team_score;
+        document.getElementById('home-name').innerText = data.home_team_name_with_default;
         document.getElementById('game-period').innerText = data.period;
         document.getElementById('game-status').innerText = data.verbose_status;
         document.getElementById('game-time-remaining').innerText = data.time_remaining_clock;
