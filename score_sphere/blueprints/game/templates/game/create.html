@@ -11,6 +11,7 @@
 
                 {% block body %}
                 <input name="r" type="hidden" value="{{ r }}" />
+                {{ macros.select('sport', game, sport_options) }}
                 {{ macros.text('away_team_name', game, label="Away Team") }}
                 {{ macros.text('home_team_name', game, label="Home Team") }}
                 {{ macros.text('period', game)}}

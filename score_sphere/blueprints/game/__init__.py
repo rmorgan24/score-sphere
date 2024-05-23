@@ -67,6 +67,7 @@ async def create():
     return await render_template(
         "game/create.html",
         game=game,
+        sport_options=[(x.value.title(), x.value) for x in enums.GameSport],
         status_options=[(x.value.title(), x.value) for x in enums.GameStatus],
         r=url_for(".index", status__in="{-status-}"),
         tab="game",
@@ -88,6 +89,7 @@ async def update(id: int):
     return await render_template(
         "game/update.html",
         game=game,
+        sport_options=[(x.value.title(), x.value) for x in enums.GameSport],
         status_options=[(x.value.title(), x.value) for x in enums.GameStatus],
         r=url_for(".view", id=game.id),
         tab="game",

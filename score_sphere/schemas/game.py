@@ -83,10 +83,10 @@ class GameCreate(BaseModel):
 
 class GamePatch(BaseModel):
     sport: SPORT_VALIDATOR = NOTSET
-    home_team_name: TEAM_NAME_VALIDATOR = NOTSET
+    home_team_name: Optional[TEAM_NAME_VALIDATOR] = NOTSET
     home_team_score: TEAM_SCORE_VALIDATOR = NOTSET
 
-    away_team_name: TEAM_NAME_VALIDATOR = NOTSET
+    away_team_name: Optional[TEAM_NAME_VALIDATOR] = NOTSET
     away_team_score: TEAM_SCORE_VALIDATOR = NOTSET
 
     status: GAME_STATUS_VALIDATOR = NOTSET
