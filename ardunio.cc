@@ -10,20 +10,19 @@
 // Replace with your network credentials
 const char* ssid = "BigRed";
 const char* password = "PASSWORD"; // UPDATE ME
-int count = 0;
 
 void initWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print('.');
+    Serial.print(WiFi.status());
     delay(1000);
   }
   Serial.println(WiFi.localIP());
 }
 
-void saveMessage(String message) {
+int saveMessage(String message) {
     // Prepare JSON document
     DynamicJsonDocument doc(2048);
     doc["text"] = message;
@@ -40,21 +39,23 @@ void saveMessage(String message) {
     http.addHeader("Content-Type", "application/json");
     http.POST(json);
 
-    // Read response
-    Serial.print(http.getString());
+    DynamicJsonDocument res(2048);
+    deserializeJson(res, http.getStream());
 
     // Disconnect
     http.end();
+    return res["id"].as<int>();
 }
 
-void createGame() {
-      // Prepare JSON document
+int createGame(String sport, int time_remaining) {
+    // Prepare JSON document
     DynamicJsonDocument doc(2048);
     doc["away_team_name"] = "Away";
     doc["home_team_name"] = "Home";
+    doc["sport"] = sport;
     doc["period"] = 1;
     doc["status"] = "in-progress";
-    doc["time_remaining"] = 900;
+    doc["time_remaining"] = time_remaining;
 
     // Serialize JSON document
     String json;
@@ -68,22 +69,22 @@ void createGame() {
     http.addHeader("Content-Type", "application/json");
     http.POST(json);
 
-    // Read response
-    Serial.print(http.getString());
+    DynamicJsonDocument res(2048);
+    deserializeJson(res, http.getStream());
 
     // Disconnect
     http.end();
+    return res["id"].as<int>();
 }
 
-void updateGame() {
+int updateGame(int id, int away_score, int home_score, int period, int time_remaining) {
       // Prepare JSON document
     DynamicJsonDocument doc(2048);
 
-    int gameId = 1;
-    doc["away_team_score"] = 10;
-    doc["home_team_score"] = 12;
-    doc["period"] = 1;
-    doc["time_remaining"] = 845;
+    doc["away_team_score"] = away_score;
+    doc["home_team_score"] = home_score;
+    doc["period"] = period;
+    doc["time_remaining"] = time_remaining;
 
     // Serialize JSON document
     String json;
@@ -93,15 +94,16 @@ void updateGame() {
     HTTPClient http;
 
     // Send request
-    http.begin(client, "http://score-sphere.duckdns.org:8888/api/game/" + gameId);
+    http.begin(client, "http://score-sphere.duckdns.org:8888/api/game/" + id);
     http.addHeader("Content-Type", "application/json");
     http.PATCH(json);
 
-    // Read response
-    Serial.print(http.getString());
+    DynamicJsonDocument res(2048);
+    deserializeJson(res, http.getStream());
 
     // Disconnect
     http.end();
+    return res["id"].as<int>();
 }
 
 void setup() {
@@ -109,8 +111,11 @@ void setup() {
   initWiFi();
   Serial.print("RRSI: ");
   Serial.println(WiFi.RSSI());
-  saveMessage("Hello Riley!");
-  Serial.print("Message Sent");
+  int messageId = saveMessage("Hello Riley!");
+  Serial.print("Message Sent " + messageId);
+
+  int gameId = createGame("lacrosse", 15*60);
+  updateGame(gameId, 10, 5, 1, 12*60);
 }
 
 void loop() {
