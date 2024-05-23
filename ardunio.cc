@@ -13,7 +13,7 @@ const char* password = "PASSWORD"; // UPDATE ME
 
 void initWiFi() {
   WiFi.mode(WIFI_STA);
-  WiFi.begin("Wokwi-GUEST", "", 6);
+  WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(WiFi.status());
@@ -107,6 +107,35 @@ int updateGame(int id, int away_score, int home_score, int period, int time_rema
     return res["id"].as<int>();
 }
 
+void createCard(int id, int player_number, String card_color, int period, int time_remaining) {
+    // Prepare JSON document
+    DynamicJsonDocument doc(2048);
+
+    doc["player_number"] = player_number;
+    doc["card_color"] = card_color;
+    doc["period"] = period;
+    doc["time_remaining"] = time_remaining;
+
+    // Serialize JSON document
+    String json;
+    serializeJson(doc, json);
+
+    WiFiClient client;  // or WiFiClientSecure for HTTPS
+    HTTPClient http;
+
+    // Send request
+    String baseUrl = "http://score-sphere.duckdns.org:8888/api/game/";
+    http.begin(client, baseUrl + id + "/card");
+    http.addHeader("Content-Type", "application/json");
+    http.PUT(json);
+
+    DynamicJsonDocument res(2048);
+    deserializeJson(res, http.getStream());
+
+    // Disconnect
+    http.end();
+}
+
 void setup() {
   Serial.begin(115200);
 
@@ -122,7 +151,9 @@ void setup() {
   Serial.println(gameId);
   updateGame(gameId, 10, 5, 1, 12*60);
   Serial.println("Game Updated");
+  createCard(gameId, 34, "red", 1, 11*60);
+  Serial.println("Card Created");
 }
 
 void loop() {
-}
+} 
