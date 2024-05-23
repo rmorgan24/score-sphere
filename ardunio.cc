@@ -152,7 +152,7 @@ void setup() {
   Serial.println(gameId);
   updateGame(gameId, 10, 5, 1, 12*60);
   Serial.println("Game Updated");
-  createCard(gameId, 'home', 34, "red", 1, 11*60);
+  createCard(gameId, "home", 34, "red", 1, 11*60);
   Serial.println("Card Created");
 }
 
