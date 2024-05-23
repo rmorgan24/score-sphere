@@ -11,7 +11,7 @@ from .helpers import conditional_set, handle_orm_errors
 
 
 def has_permission(
-    user: schemas.User,
+    _user: schemas.User,
     _obj: Union[schemas.Game, None],
     permission: enums.Permission,
 ) -> bool:
