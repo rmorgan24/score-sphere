@@ -22,7 +22,7 @@ def has_permission(
         return True
 
     if permission == enums.Permission.UPDATE:
-        return user and user.id > 0
+        return True
 
     if permission == enums.Permission.DELETE:
         return True
