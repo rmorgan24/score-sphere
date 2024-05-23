@@ -47,6 +47,11 @@ class GameCard(BaseModel):
     period: int
     time_remaining: int
 
+    @computed_field
+    @property
+    def time_remaining_clock(self) -> str:
+        return f"{(self.time_remaining//60):02}:{(self.time_remaining%60):02}"
+
 
 class GameCreate(BaseModel):
     sport: SPORT_VALIDATOR

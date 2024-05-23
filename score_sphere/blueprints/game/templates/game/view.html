@@ -53,7 +53,7 @@
                     {{ card.period }}
                 </td>
                 <td>
-                    {{ card.time_remaining }}
+                    {{ card.time_remaining_clock }}
                 </td>
             </tr>
             {% endfor %}
@@ -121,7 +121,7 @@
             row.appendChild(cell);
 
             cell = document.createElement("td");
-            cell.innerText = card.time_remaining;
+            cell.innerText = card.time_remaining_clock;
             row.appendChild(cell);
 
             tbody.append(row);
