@@ -13,7 +13,7 @@ const char* password = "PASSWORD"; // UPDATE ME
 
 void initWiFi() {
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
+  WiFi.begin("Wokwi-GUEST", "", 6);
   Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED) {
     Serial.print(WiFi.status());
@@ -78,7 +78,7 @@ int createGame(String sport, int time_remaining) {
 }
 
 int updateGame(int id, int away_score, int home_score, int period, int time_remaining) {
-      // Prepare JSON document
+    // Prepare JSON document
     DynamicJsonDocument doc(2048);
 
     doc["away_team_score"] = away_score;
@@ -94,7 +94,8 @@ int updateGame(int id, int away_score, int home_score, int period, int time_rema
     HTTPClient http;
 
     // Send request
-    http.begin(client, "http://score-sphere.duckdns.org:8888/api/game/" + id);
+    String baseUrl = "http://score-sphere.duckdns.org:8888/api/game/";
+    http.begin(client, baseUrl + id);
     http.addHeader("Content-Type", "application/json");
     http.PATCH(json);
 
@@ -108,14 +109,19 @@ int updateGame(int id, int away_score, int home_score, int period, int time_rema
 
 void setup() {
   Serial.begin(115200);
+
   initWiFi();
   Serial.print("RRSI: ");
   Serial.println(WiFi.RSSI());
   int messageId = saveMessage("Hello Riley!");
-  Serial.print("Message Sent " + messageId);
+  Serial.print("Message Sent ");
+  Serial.println(messageId);
 
   int gameId = createGame("lacrosse", 15*60);
+  Serial.print("Game Created ");
+  Serial.println(gameId);
   updateGame(gameId, 10, 5, 1, 12*60);
+  Serial.println("Game Updated");
 }
 
 void loop() {
