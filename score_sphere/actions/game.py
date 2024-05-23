@@ -149,6 +149,7 @@ async def card_create(
     try:
         game_card = await models.GameCard.get(
             game_id=id,
+            team=data.team,
             player_number=data.player_number,
             period=data.period,
             time_remaining=data.time_remaining,
@@ -157,6 +158,7 @@ async def card_create(
         game_card = await models.GameCard.create(
             game_id=id,
             card_color=data.card_color,
+            team=data.team,
             player_number=data.player_number,
             period=data.period,
             time_remaining=data.time_remaining,

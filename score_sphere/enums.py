@@ -34,6 +34,11 @@ class GameStatus(EnumStr):
     ENDED = "ended"
 
 
+class GameTeam(EnumStr):
+    HOME = "home"
+    AWAY = "away"
+
+
 class GameCardColor(EnumStr):
     RED = "red"
     YELLOW = "yellow"

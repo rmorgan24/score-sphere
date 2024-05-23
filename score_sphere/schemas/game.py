@@ -24,10 +24,12 @@ PLAYER_NUMBER_VALIDATOR = int
 SPORT_VALIDATOR = enums.GameSport
 TEAM_NAME_VALIDATOR = Annotated[str, StringConstraints(max_length=16)]
 TEAM_SCORE_VALIDATOR = int
+TEAM_VALIDATOR = enums.GameTeam
 TIME_REMAINING_VALIDATOR = int
 
 
 class GameCardCreate(BaseModel):
+    team: TEAM_VALIDATOR
     player_number: PLAYER_NUMBER_VALIDATOR
     card_color: CARD_COLOR_VALIDATOR
     period: PERIOD_VALIDATOR
@@ -39,6 +41,7 @@ class GameCard(BaseModel):
 
     game_id: int
 
+    team: str
     player_number: int
     card_color: str
     period: int

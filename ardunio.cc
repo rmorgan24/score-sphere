@@ -107,10 +107,11 @@ int updateGame(int id, int away_score, int home_score, int period, int time_rema
     return res["id"].as<int>();
 }
 
-void createCard(int id, int player_number, String card_color, int period, int time_remaining) {
+void createCard(int id, String team, int player_number, String card_color, int period, int time_remaining) {
     // Prepare JSON document
     DynamicJsonDocument doc(2048);
 
+    doc["team"] = team;
     doc["player_number"] = player_number;
     doc["card_color"] = card_color;
     doc["period"] = period;
@@ -151,7 +152,7 @@ void setup() {
   Serial.println(gameId);
   updateGame(gameId, 10, 5, 1, 12*60);
   Serial.println("Game Updated");
-  createCard(gameId, 34, "red", 1, 11*60);
+  createCard(gameId, 'home', 34, "red", 1, 11*60);
   Serial.println("Card Created");
 }
 

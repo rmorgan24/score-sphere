@@ -30,6 +30,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Team</th>
                 <th>Player #</th>
                 <th>Card Color</th>
                 <th>Period</th>
@@ -39,6 +40,9 @@
         <tbody id="game-cards">
             {% for card in game.cards %}
             <tr>
+                <td>
+                    {{ card.team|title }}
+                </td>
                 <td>
                     {{ card.player_number }}
                 </td>
@@ -99,6 +103,10 @@
             var card = data.cards[i];
             var row = document.createElement("tr");
             var cell;
+
+            cell = document.createElement("td");
+            cell.innerText = card.team.substring(0, 1).toUpperCase() + card.team.substring(1);
+            row.appendChild(cell);
 
             cell = document.createElement("td");
             cell.innerText = card.player_number;

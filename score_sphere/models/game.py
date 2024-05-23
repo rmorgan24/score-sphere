@@ -25,6 +25,7 @@ class Game(TimestampMixin, Model):
 class GameCard(TimestampMixin, Model):
     id = fields.IntField(pk=True)
 
+    team = fields.CharEnumField(enums.GameTeam)
     player_number = fields.IntField()
     card_color = fields.CharEnumField(enums.GameCardColor, max_length=16)
     period = fields.IntField()
